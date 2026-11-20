@@ -3,6 +3,8 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+permissions:
+  contents: write
 jobs:
   android:
     runs-on: ubuntu-latest
@@ -27,3 +29,10 @@ jobs:
         with:
           name: bsr-apk
           path: build/app/outputs/flutter-apk/app-release.apk
+      - name: Publish APK as a release (public download link)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cp build/app/outputs/flutter-apk/app-release.apk BSR.apk
+          gh release delete latest --yes --cleanup-tag || true
+          gh release create latest BSR.apk --title "BSR (latest build)" --notes "Auto-built from ${GITHUB_SHA::7}. Push notifications are off in this build (no Firebase config)."
