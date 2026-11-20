@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
-import 'package:flutter_html_table/flutter_html_table.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../models/post.dart';
@@ -97,14 +96,12 @@ class _ArticleScreenState extends State<ArticleScreen> {
                     if (p.content.isEmpty)
                       const Padding(padding: EdgeInsets.all(24), child: Center(child: CircularProgressIndicator()))
                     else
-                      Html(
-                        data: p.content,
-                        extensions: const [TableHtmlExtension()],
-                        style: {
-                          'body': Style(fontSize: FontSize(17 * s), lineHeight: LineHeight(1.6), margin: Margins.zero, padding: HtmlPaddings.zero),
-                        },
-                        onLinkTap: (url, _, __) {
-                          if (url != null) _open(url);
+                      HtmlWidget(
+                        p.content,
+                        textStyle: TextStyle(fontSize: 17 * s, height: 1.6),
+                        onTapUrl: (url) async {
+                          await _open(url);
+                          return true;
                         },
                       ),
                   ],
