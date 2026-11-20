@@ -9,3 +9,4 @@ sed -i 's#android:label="bsr"#android:label="BSR"#' "$M"
 for f in android/app/build.gradle android/app/build.gradle.kts; do
   [ -f "$f" ] && sed -i -E 's/minSdk(Version)?\s*=?\s*flutter\.minSdkVersion/minSdk = 23/' "$f" || true
 done
+rm -f test/widget_test.dart  # flutter create-এর ডিফল্ট কাউন্টার টেস্ট BSR-এর সঙ্গে মেলে না
